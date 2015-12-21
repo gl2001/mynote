@@ -2,21 +2,25 @@ package cn.sz.qianfeng.vo;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
-
+/**
+ * 用户实体类
+ * @author gl
+ *
+ */
 public class Users implements Serializable {
 
-	private Integer userid;
-	private String loginname;
-	private String pwd;
-	private String realname;
-	private String nickname;
-	private Integer mobile;
-	private String email;
-	private String university;
-	private String subject;
-	private Timestamp graduateTime;
-	private String cls;
-	private String isAdmin;
+	private Integer userid;//用户编号
+	private String loginname;//登录名,要求唯一
+	private String pwd;//密码,做MD5加密
+	private String realname;//真实姓名
+	private String nickname;//昵称
+	private Integer mobile;//手机号码
+	private String email;//邮箱
+	private String university;//毕业学校
+	private String subject;//专业
+	private Timestamp graduateTime;//毕业时间
+	private String cls;//现在的班级(固定格式：如sz-android-xxxx)
+	private String isAdmin;//是否是管理员(0为管理员，1为普通用户)
 	public Integer getUserid() {
 		return userid;
 	}
