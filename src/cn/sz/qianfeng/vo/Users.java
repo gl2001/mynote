@@ -14,7 +14,7 @@ public class Users implements Serializable {
 	private String pwd;//密码,做MD5加密
 	private String realname;//真实姓名
 	private String nickname;//昵称
-	private Integer mobile;//手机号码
+	private String mobile;//手机号码
 	private String email;//邮箱
 	private String university;//毕业学校
 	private String subject;//专业
@@ -51,10 +51,10 @@ public class Users implements Serializable {
 	public void setNickname(String nickname) {
 		this.nickname = nickname;
 	}
-	public Integer getMobile() {
+	public String getMobile() {
 		return mobile;
 	}
-	public void setMobile(Integer mobile) {
+	public void setMobile(String mobile) {
 		this.mobile = mobile;
 	}
 	public String getEmail() {
