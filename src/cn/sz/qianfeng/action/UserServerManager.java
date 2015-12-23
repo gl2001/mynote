@@ -28,4 +28,11 @@ public class UserServerManager {
 		}
 		return ServiceFactory.getUsersBizInstance().doCreate(users);
 	}
+	
+	public boolean changePwd(Users users){
+		if(users==null){
+			return false;
+		}
+		return ServiceFactory.getUsersBizInstance().doUpdate(users);
+	}
 }

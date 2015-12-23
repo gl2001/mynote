@@ -18,7 +18,7 @@ public class Users implements Serializable {
 	private String email;//邮箱
 	private String university;//毕业学校
 	private String subject;//专业
-	private Timestamp graduateTime;//毕业时间
+	private String graduateTime;//毕业时间
 	private String cls;//现在的班级(固定格式：如sz-android-xxxx)
 	private String isAdmin;//是否是管理员(0为管理员，1为普通用户)
 	public Integer getUserid() {
@@ -75,10 +75,10 @@ public class Users implements Serializable {
 	public void setSubject(String subject) {
 		this.subject = subject;
 	}
-	public Timestamp getGraduateTime() {
+	public String getGraduateTime() {
 		return graduateTime;
 	}
-	public void setGraduateTime(Timestamp graduateTime) {
+	public void setGraduateTime(String graduateTime) {
 		this.graduateTime = graduateTime;
 	}
 	public String getCls() {

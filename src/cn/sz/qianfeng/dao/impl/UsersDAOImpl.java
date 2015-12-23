@@ -25,8 +25,8 @@ public class UsersDAOImpl implements IUsersDAO {
 	@Override
 	public boolean doCreate(Users vo) {
 		conn = dbc.getConnection();
-		String sql = "insert into users(loginname,pwd,realname,nickname,mobile,email,isAdmin)" +
-				" values(?,?,?,?,?,?,?)";
+		String sql = "insert into users(loginname,pwd,realname,nickname,mobile,email,isAdmin,university,subject,graduateTime,cls)" +
+				" values(?,?,?,?,?,?,?,?,?,?,?)";
 		try {
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, vo.getLoginname());
@@ -36,6 +36,10 @@ public class UsersDAOImpl implements IUsersDAO {
 			pstmt.setString(5, vo.getMobile());
 			pstmt.setString(6, vo.getEmail());
 			pstmt.setString(7, vo.getIsAdmin());
+			pstmt.setString(8, vo.getUniversity());
+			pstmt.setString(9, vo.getSubject());
+			pstmt.setString(10, vo.getGraduateTime());
+			pstmt.setString(11, vo.getCls());
 			
 			int result = pstmt.executeUpdate();
 			if(result>0){
@@ -51,6 +55,22 @@ public class UsersDAOImpl implements IUsersDAO {
 
 	@Override
 	public boolean doUpdate(Users vo) {
+		conn = dbc.getConnection();
+		String sql = "update users set pwd=? where userid=?";
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, vo.getPwd());
+			pstmt.setInt(2, vo.getUserid());
+			
+			int result = pstmt.executeUpdate();
+			if(result>0){
+				return true;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally{
+			dbc.close(conn, pstmt, rs);
+		}
 		return false;
 	}
 

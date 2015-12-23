@@ -14,6 +14,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import cn.sz.qianfeng.action.CallThread;
+import cn.sz.qianfeng.action.ClientManager;
 import cn.sz.qianfeng.action.UserClientManager;
 import cn.sz.qianfeng.vo.Users;
 
@@ -29,9 +30,8 @@ public class Client {
 			System.out.println("欢迎使用【我的笔记】服务");
 			UserClientManager manager = new UserClientManager();
 			ExecutorService service = Executors.newCachedThreadPool();
-			boolean type = true;
 			int count = 0 ;
-			while(type){
+			while(count<3){
 				Scanner input = new Scanner(System.in);
 				System.out.println("请选择您要的操作(1.登录         2.注册)：");
 				int choice = Integer.valueOf(input.next());
@@ -50,13 +50,13 @@ public class Client {
 					users = JSON.parseObject(userinfo,Users.class);
 					if(users!=null){
 						System.out.println("登录成功");
-						System.out.println(users.getRealname()+"----"+users.getEmail()+"-----"+users.getNickname());
-						type = false;
+						new ClientManager(socket).showMainMenu(users);
+						break;
 					}else{
 						count++;
 						if(count>=3){
 							System.out.println("登录失败次数超过三次，程序退出");
-							type = false;
+							System.exit(0);
 						}else{
 							System.out.println("登录失败，请重新输入");
 						}

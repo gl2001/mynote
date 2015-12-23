@@ -1,7 +1,9 @@
 package cn.sz.qianfeng.factory;
 
+import cn.sz.qianfeng.dao.IDirectoryDAO;
 import cn.sz.qianfeng.dao.INoteDAO;
 import cn.sz.qianfeng.dao.IUsersDAO;
+import cn.sz.qianfeng.dao.impl.DirectoryDAOImpl;
 import cn.sz.qianfeng.dao.impl.NoteDAOImpl;
 import cn.sz.qianfeng.dao.impl.UsersDAOImpl;
 
@@ -13,5 +15,9 @@ public class DAOFactory {
 	
 	public static INoteDAO getNoteDAOInstance(){
 		return new NoteDAOImpl();
+	}
+	
+	public static IDirectoryDAO getDirectoryDAOInstance(){
+		return new DirectoryDAOImpl();
 	}
 }

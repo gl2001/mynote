@@ -18,4 +18,11 @@ public interface IUsersBiz {
 	 * @return
 	 */
 	public Users islogin(String loginname, String pwd);
+	
+	/**
+	 * 修改密码
+	 * @param vo:该对象中需要传递密码和userid,其他信息的修改不能调用该方法
+	 * @return
+	 */
+	public boolean doUpdate(Users vo);
 }
