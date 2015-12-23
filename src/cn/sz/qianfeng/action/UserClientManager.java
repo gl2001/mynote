@@ -77,7 +77,7 @@ public class UserClientManager {
 				Directory direct = sublist.get(i);
 				System.out.println("           "+i+"."+direct.getOption());
 			}
-			Directory subDirect = list.get(input.nextInt());
+			Directory subDirect = sublist.get(input.nextInt());
 			
 			System.out.println("«Î ‰»Î∞‡º∂±‡∫≈£∫");
 			String cls = input.next();
