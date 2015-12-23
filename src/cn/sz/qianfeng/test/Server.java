@@ -13,11 +13,11 @@ public class Server {
 	public static void main(String[] args) {
 		try {
 			ServerSocket server = new ServerSocket(8888);
-			Set<Socket> set = new HashSet<Socket>();
+			//Set<Socket> set = new HashSet<Socket>();
 			Socket socket = null;
 			while(true){
 				socket = server.accept();
-				set.add(socket);
+				//set.add(socket);
 				new Thread(new ServerThread(socket)).start();
 				
 				

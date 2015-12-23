@@ -35,4 +35,9 @@ public class NoteBizImpl implements INoteBiz {
 		return DAOFactory.getNoteDAOInstance().getCount(column, kw);
 	}
 
+	@Override
+	public Note findById(Integer id) {
+		return DAOFactory.getNoteDAOInstance().findById(id);
+	}
+
 }

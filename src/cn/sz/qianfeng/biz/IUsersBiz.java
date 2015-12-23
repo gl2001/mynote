@@ -25,4 +25,11 @@ public interface IUsersBiz {
 	 * @return
 	 */
 	public boolean doUpdate(Users vo);
+	
+	/**
+	 * 根据主键查对象
+	 * @param id
+	 * @return
+	 */
+	public Users findById(Integer id);
 }

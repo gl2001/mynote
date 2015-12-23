@@ -1,5 +1,8 @@
 package cn.sz.qianfeng.dao.impl;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -27,11 +30,11 @@ public class NoteDAOImpl implements INoteDAO {
 		try {
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, vo.getUserid());
-			pstmt.setString(2, vo.getNotename());
-			pstmt.setDate(3, new java.sql.Date(vo.getCreateTime().getTime()));
-			pstmt.setString(4, vo.getPath());
+			pstmt.setString(2, URLEncoder.encode(vo.getNotename(), "utf-8"));
+			pstmt.setString(3,vo.getCreateTime());
+			pstmt.setString(4, URLEncoder.encode(vo.getPath(), "utf-8"));
 			pstmt.setString(5, vo.getIsShare());
-			pstmt.setString(6, vo.getSummary());
+			pstmt.setString(6, URLEncoder.encode(vo.getSummary(), "utf-8"));
 			pstmt.setInt(7, vo.getReadTimes());
 			pstmt.setInt(8, vo.getLikeTimes());
 			
@@ -40,6 +43,8 @@ public class NoteDAOImpl implements INoteDAO {
 				return true;
 			}
 		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 		}finally{
 			dbc.close(conn, pstmt, rs);
@@ -55,11 +60,11 @@ public class NoteDAOImpl implements INoteDAO {
 		try {
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, vo.getUserid());
-			pstmt.setString(2, vo.getNotename());
-			pstmt.setDate(3, new java.sql.Date(vo.getCreateTime().getTime()));
-			pstmt.setString(4, vo.getPath());
+			pstmt.setString(2, URLEncoder.encode(vo.getNotename(), "utf-8"));
+			pstmt.setString(3,vo.getCreateTime());
+			pstmt.setString(4, URLEncoder.encode(vo.getPath(), "utf-8"));
 			pstmt.setString(5, vo.getIsShare());
-			pstmt.setString(6, vo.getSummary());
+			pstmt.setString(6, URLEncoder.encode(vo.getSummary(), "utf-8"));
 			pstmt.setInt(7, vo.getReadTimes());
 			pstmt.setInt(8, vo.getLikeTimes());
 			pstmt.setInt(9, vo.getNid());
@@ -69,6 +74,8 @@ public class NoteDAOImpl implements INoteDAO {
 				return true;
 			}
 		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 		}finally{
 			dbc.close(conn, pstmt, rs);
@@ -113,6 +120,37 @@ public class NoteDAOImpl implements INoteDAO {
 
 	@Override
 	public Note findById(Integer id) {
+		conn = dbc.getConnection();
+		Note vo = null;
+		String sql = "select nid,userid,notename,createtime,path,isShare,summary,readTimes," +
+				"likeTimes from note where nid=?";
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, id);
+			
+			rs = pstmt.executeQuery();
+			while(rs.next()){
+				vo = new Note();
+				vo.setNid(rs.getInt(1));
+				vo.setUserid(rs.getInt(2));
+				vo.setNotename(URLDecoder.decode(rs.getString(3), "utf-8"));
+				vo.setCreateTime(rs.getString(4));
+				vo.setPath(URLDecoder.decode(rs.getString(5), "utf-8"));
+				vo.setIsShare(rs.getString(6));
+				vo.setSummary(URLDecoder.decode(rs.getString(7), "utf-8"));
+				vo.setReadTimes(rs.getInt(8));
+				vo.setLikeTimes(rs.getInt(9));
+			}
+			
+			return vo;
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}finally{
+			dbc.close(conn, pstmt, rs);
+		}
 		return null;
 	}
 
@@ -134,11 +172,11 @@ public class NoteDAOImpl implements INoteDAO {
 				vo = new Note();
 				vo.setNid(rs.getInt(1));
 				vo.setUserid(rs.getInt(2));
-				vo.setNotename(rs.getString(3));
-				vo.setCreateTime(new Timestamp(rs.getDate(4).getTime()));
-				vo.setPath(rs.getString(5));
+				vo.setNotename(URLDecoder.decode(rs.getString(3), "utf-8"));
+				vo.setCreateTime(rs.getString(4));
+				vo.setPath(URLDecoder.decode(rs.getString(5), "utf-8"));
 				vo.setIsShare(rs.getString(6));
-				vo.setSummary(rs.getString(7));
+				vo.setSummary(URLDecoder.decode(rs.getString(7), "utf-8"));
 				vo.setReadTimes(rs.getInt(8));
 				vo.setLikeTimes(rs.getInt(9));
 				all.add(vo);
@@ -147,6 +185,8 @@ public class NoteDAOImpl implements INoteDAO {
 			return all;
 			
 		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 		}finally{
 			dbc.close(conn, pstmt, rs);

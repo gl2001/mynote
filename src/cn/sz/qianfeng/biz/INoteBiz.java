@@ -44,4 +44,11 @@ public interface INoteBiz {
 	 * @return
 	 */
 	public int getCount(String column, String kw);
+	
+	/**
+	 * 根据笔记id查询笔记记录对象
+	 * @param id
+	 * @return
+	 */
+	public Note findById(Integer id);
 }

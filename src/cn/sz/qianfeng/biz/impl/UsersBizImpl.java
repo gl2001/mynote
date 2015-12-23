@@ -24,4 +24,9 @@ public class UsersBizImpl implements IUsersBiz {
 		return DAOFactory.getUsersDAOInstance().doUpdate(vo);
 	}
 
+	@Override
+	public Users findById(Integer id) {
+		return DAOFactory.getUsersDAOInstance().findById(id);
+	}
+
 }

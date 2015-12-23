@@ -40,4 +40,25 @@ public class ClientSendTool<K> {
 		}
 		return null;
 	}
+	
+	public String sendJsonRequest(String json,Integer status){
+		try {
+			JSONArray arr = new JSONArray();
+			JSONObject jo = new JSONObject();
+			jo.put("status", status);
+			arr.put(jo);
+			arr.put(new JSONObject(json));
+			Future<String> f = service.submit(new CallThread(socket, arr.toString()));
+			return f.get();
+			
+		} catch (JSONException e) {
+			e.printStackTrace();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		} catch (ExecutionException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
 }

@@ -12,7 +12,7 @@ public class Note implements Serializable {
 	private Integer nid;//笔记编号
 	private Integer userid;//笔记所属用户的用户编号
 	private String notename;//笔记名字
-	private Timestamp createTime;//创建时间
+	private String createTime;//创建时间
 	private String path;//笔记文件存放路径(d:\\目录\\文件名.后缀)
 	private String isShare;//是否共享(0表示共享，1表示不共享)
 	private String summary;//简介
@@ -36,10 +36,10 @@ public class Note implements Serializable {
 	public void setNotename(String notename) {
 		this.notename = notename;
 	}
-	public Timestamp getCreateTime() {
+	public String getCreateTime() {
 		return createTime;
 	}
-	public void setCreateTime(Timestamp createTime) {
+	public void setCreateTime(String createTime) {
 		this.createTime = createTime;
 	}
 	public String getPath() {

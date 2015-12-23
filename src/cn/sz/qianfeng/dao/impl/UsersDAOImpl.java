@@ -96,6 +96,43 @@ public class UsersDAOImpl implements IUsersDAO {
 
 	@Override
 	public Users findById(Integer id) {
+		Users vo = null;
+		conn = dbc.getConnection();
+		String sql = "select userid,loginname,pwd,realname,nickname,mobile,email,isAdmin,university,subject,graduateTime,cls " +
+				"from users where userid=?";
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, id);
+			
+			rs = pstmt.executeQuery();
+			while(rs.next()){
+				vo = new Users();
+				vo.setUserid(rs.getInt(1));
+				vo.setLoginname(rs.getString(2));
+				vo.setPwd(rs.getString(3));
+				String realname = rs.getString(4);
+				realname = URLDecoder.decode(realname, "utf-8");
+				
+				vo.setRealname(realname);
+				String nickname = rs.getString(5);
+				nickname = URLDecoder.decode(nickname, "utf-8");
+				vo.setNickname(nickname);
+				vo.setMobile(rs.getString(6));
+				vo.setEmail(rs.getString(7));
+				vo.setIsAdmin(rs.getString(8));
+				vo.setUniversity(URLDecoder.decode(rs.getString(9), "utf-8"));
+				vo.setSubject(URLDecoder.decode(rs.getString(10), "utf-8"));
+				vo.setGraduateTime(rs.getString(11));
+				vo.setCls(rs.getString(12));
+			}
+			return vo;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		} finally{
+			dbc.close(conn, pstmt, rs);
+		}
 		return null;
 	}
 
