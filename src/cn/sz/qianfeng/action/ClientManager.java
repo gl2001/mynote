@@ -3,8 +3,12 @@ package cn.sz.qianfeng.action;
 import java.net.Socket;
 import java.util.List;
 import java.util.Scanner;
+import java.util.concurrent.Future;
+
+import com.alibaba.fastjson.JSON;
 
 import cn.sz.qianfeng.util.ClientSendTool;
+import cn.sz.qianfeng.vo.Directory;
 import cn.sz.qianfeng.vo.PageSplit;
 import cn.sz.qianfeng.vo.Users;
 
@@ -98,5 +102,18 @@ public class ClientManager {
 				
 			}
 		}
+	}
+	
+	/**
+	 * 去服务器端查询字典表中的集合
+	 * @param socket
+	 * @param sub : 字典表中的项目字段
+	 * @return
+	 */
+	public List<Directory> findDirectBySubject(Socket socket,String sub){
+		Directory direct = new Directory();
+		direct.setSubject(sub);
+		String result = new ClientSendTool<Directory>(socket).sendRequest(direct, 6);//查询字典表为3
+		return JSON.parseArray(result, Directory.class);
 	}
 }

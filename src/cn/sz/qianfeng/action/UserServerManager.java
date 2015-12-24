@@ -1,14 +1,12 @@
 package cn.sz.qianfeng.action;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.ObjectInputStream;
 import java.util.List;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import cn.sz.qianfeng.factory.ServiceFactory;
+import cn.sz.qianfeng.vo.Directory;
 import cn.sz.qianfeng.vo.Note;
 import cn.sz.qianfeng.vo.PageSplit;
 import cn.sz.qianfeng.vo.Users;
@@ -73,5 +71,13 @@ public class UserServerManager {
 		return obj.toString();
 	}
 	
-	
+	/**
+	 * 根据字典项目subject来查询对应的字典记录
+	 * @param direct : 字典对象，查询中只使用该对象中的subject属性，其他都没用
+	 * @return : 返回字典对象集合
+	 */
+	public String findDirectBySubject(Directory direct){
+		List<Directory> list = ServiceFactory.getDirectoryBizInstance().findall(direct.getSubject());
+		return JSON.toJSONString(list);
+	}
 }

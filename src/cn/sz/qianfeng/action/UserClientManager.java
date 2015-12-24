@@ -1,10 +1,12 @@
 package cn.sz.qianfeng.action;
 
 import java.io.UnsupportedEncodingException;
+import java.net.Socket;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.util.List;
 import java.util.Scanner;
+import java.util.concurrent.Future;
 
 import cn.sz.qianfeng.factory.ServiceFactory;
 import cn.sz.qianfeng.vo.Directory;
@@ -33,9 +35,11 @@ public class UserClientManager {
 	
 	/**
 	 * 接收所有用户信息，为用户注册准备
+	 * @param list : 字典表中区域对象集合
+	 * @param sublist ： 字典表中科目对象集合
 	 * @return
 	 */
-	public Users enterForReg(){
+	public Users enterForReg(List<Directory> list,List<Directory> sublist){
 		Users users = null;
 		try {
 			Scanner input = new Scanner(System.in);
@@ -62,16 +66,17 @@ public class UserClientManager {
 			System.out.println("请输入您的毕业时间(格式为2015-09):");
 			String graduateTime = input.next();
 			
-			List<Directory> list = ServiceFactory.getDirectoryBizInstance().findall("area");
+			//List<Directory> list = ServiceFactory.getDirectoryBizInstance().findall("area");
+			
+			
 			System.out.println("请选择您的班级所在的区域");
 			for (int i = 0; i < list.size(); i++) {
 				Directory direct = list.get(i);
-				String d = URLDecoder.decode(direct.getOption(), "utf-8");
-				System.out.println("           "+i+"."+d);
+				System.out.println("           "+i+"."+URLDecoder.decode(direct.getOption(), "utf-8"));
 			}
 			Directory directory = list.get(input.nextInt());
 			
-			List<Directory> sublist = ServiceFactory.getDirectoryBizInstance().findall("subject");
+			//List<Directory> sublist = ServiceFactory.getDirectoryBizInstance().findall("subject");
 			System.out.println("请选择您的课程：");
 			for (int i = 0; i < sublist.size(); i++) {
 				Directory direct = sublist.get(i);

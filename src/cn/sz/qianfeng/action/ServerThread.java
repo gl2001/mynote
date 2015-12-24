@@ -14,6 +14,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import cn.sz.qianfeng.vo.Directory;
 import cn.sz.qianfeng.vo.Note;
 import cn.sz.qianfeng.vo.PageSplit;
 import cn.sz.qianfeng.vo.Users;
@@ -67,6 +68,9 @@ public class ServerThread implements Runnable {
 					List<String> content = JSON.parseArray(jsonobj.getJSONArray("list").toString(), String.class);
 					boolean iscreateok = noteManager.uploadMyNote(JSON.parseObject(jsonobj.getJSONObject("note").toString(), Note.class), content);
 					obj = iscreateok + "";
+				}else if(status==6){
+					//查询字典表
+					obj = userManager.findDirectBySubject(JSON.parseObject(arr.getJSONObject(1).toString(),Directory.class));
 				}
 				
 				//把验证结果返回客户端

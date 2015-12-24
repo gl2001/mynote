@@ -3,6 +3,7 @@ package cn.sz.qianfeng.test;
 import java.io.IOException;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.List;
 import java.util.Scanner;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
@@ -16,6 +17,7 @@ import org.json.JSONObject;
 import cn.sz.qianfeng.action.CallThread;
 import cn.sz.qianfeng.action.ClientManager;
 import cn.sz.qianfeng.action.UserClientManager;
+import cn.sz.qianfeng.vo.Directory;
 import cn.sz.qianfeng.vo.Users;
 
 import com.alibaba.fastjson.JSON;
@@ -29,6 +31,7 @@ public class Client {
 			Socket  socket = new Socket("localhost", 8888);
 			System.out.println("欢迎使用【我的笔记】服务");
 			UserClientManager manager = new UserClientManager();
+			ClientManager client = new ClientManager(socket);
 			ExecutorService service = Executors.newCachedThreadPool();
 			int count = 0 ;
 			while(count<3){
@@ -65,7 +68,12 @@ public class Client {
 					
 				}else if(choice==2){
 					System.out.println("您选择的是【注册】");
-					Users users = manager.enterForReg();
+					//这里需要先查询字典
+					//先获取字典表中的区域的对象集合
+					List<Directory> directlist = client.findDirectBySubject(socket, "area");
+					//再获取字典表中的科目集合
+					List<Directory> sublist = client.findDirectBySubject(socket, "subject");
+					Users users = manager.enterForReg(directlist,sublist);
 					JSONObject jo = new JSONObject();
 					jo.put("status", 1);//1表示注册
 					JSONArray arr = new JSONArray();
