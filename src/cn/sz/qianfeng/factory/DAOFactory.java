@@ -8,16 +8,29 @@ import cn.sz.qianfeng.dao.impl.NoteDAOImpl;
 import cn.sz.qianfeng.dao.impl.UsersDAOImpl;
 
 public class DAOFactory {
+	
+	private static DAOFactory FACTORY;
+	
+	private DAOFactory(){
+		
+	}
+	
+	public static DAOFactory getInstance(){
+		if(FACTORY==null){
+			FACTORY = new DAOFactory();
+		}
+		return FACTORY;
+	}
 
-	public static IUsersDAO getUsersDAOInstance(){
+	public IUsersDAO getUsersDAOInstance(){
 		return new UsersDAOImpl();
 	}
 	
-	public static INoteDAO getNoteDAOInstance(){
+	public INoteDAO getNoteDAOInstance(){
 		return new NoteDAOImpl();
 	}
 	
-	public static IDirectoryDAO getDirectoryDAOInstance(){
+	public IDirectoryDAO getDirectoryDAOInstance(){
 		return new DirectoryDAOImpl();
 	}
 }

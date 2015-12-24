@@ -37,7 +37,7 @@ public class CallThread implements Callable<String> {
 			return reader.readLine();
 			
 		} catch (IOException e) {
-			e.printStackTrace();
+			//e.printStackTrace();
 		}
 		return null;
 	}

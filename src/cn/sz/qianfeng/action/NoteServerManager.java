@@ -91,4 +91,14 @@ public class NoteServerManager {
 		}
 		return false;
 	}
+	
+	/**
+	 * 服务器端修改数据库中笔记的共享状态
+	 * @param note
+	 * @return
+	 */
+	public String shareMyNote(Note note){
+		boolean isupdateok = ServiceFactory.getNoteBizInstance().doUpdate(note);
+		return isupdateok+"";
+	}
 }

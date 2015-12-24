@@ -11,6 +11,7 @@ public class Note implements Serializable {
 
 	private Integer nid;//笔记编号
 	private Integer userid;//笔记所属用户的用户编号
+	private Users user;
 	private String notename;//笔记名字
 	private String createTime;//创建时间
 	private String path;//笔记文件存放路径(d:\\目录\\文件名.后缀)
@@ -71,5 +72,11 @@ public class Note implements Serializable {
 	}
 	public void setLikeTimes(Integer likeTimes) {
 		this.likeTimes = likeTimes;
+	}
+	public Users getUser() {
+		return user;
+	}
+	public void setUser(Users user) {
+		this.user = user;
 	}
 }

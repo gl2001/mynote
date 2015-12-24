@@ -71,6 +71,9 @@ public class ServerThread implements Runnable {
 				}else if(status==6){
 					//查询字典表
 					obj = userManager.findDirectBySubject(JSON.parseObject(arr.getJSONObject(1).toString(),Directory.class));
+				}else if(status==7){
+					//共享笔记
+					obj = noteManager.shareMyNote(JSON.parseObject(arr.getJSONObject(1).toString(), Note.class));
 				}
 				
 				//把验证结果返回客户端
@@ -85,7 +88,7 @@ public class ServerThread implements Runnable {
 			
 			
 		} catch (IOException e) {
-			e.printStackTrace();
+			//e.printStackTrace();
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}

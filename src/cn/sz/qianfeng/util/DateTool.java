@@ -2,16 +2,16 @@ package cn.sz.qianfeng.util;
 
 public class DateTool {
 
-	private static String [] timer = new String[4];
+	private static String [] timer = new String[2];
 	
 	static{
 		timer [0] = "\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}";
 		
-		timer [1] = "\\d{4}/\\d{2}/\\d{2} \\d{2}:\\d{2}:\\d{2}";
+		//timer [1] = "\\d{4}/\\d{2}/\\d{2} \\d{2}:\\d{2}:\\d{2}";
 		
-		timer [2] = "\\d{4}-\\d{2}-\\d{2}";
+		timer [1] = "\\d{4}-\\d{2}-\\d{2}";
 		
-		timer [3] = "\\d{4}/\\d{2}/\\d{2}";
+		//timer [3] = "\\d{4}/\\d{2}/\\d{2}";
 	}
 	
 	

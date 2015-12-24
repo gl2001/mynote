@@ -62,15 +62,16 @@ public class NoteClientManager {
 	 * 打印从服务器返回的笔记记录信息
 	 * @param jsonStr : 格式必须为：{"rows":我的笔记的总行数,"arr":"我的笔记记录的集合"}
 	 * @param splitobj : 分页参数
-	 * @param user : 用户对象,显示的是该用户的笔记记录
 	 * @return
 	 */
-	public PageSplit printNoteInfo(String jsonStr,PageSplit splitobj,Users user){
+	public PageSplit printNoteInfo(String jsonStr,PageSplit splitobj){
 		try {
 			JSONObject jsonobj = new JSONObject(jsonStr);
 			splitobj.setCount(jsonobj.getInt("rows"));
+			splitobj.setAllpage((splitobj.getCount()-1)/splitobj.getPs()+1);
 			String arr = jsonobj.getString("arr");
 			List<Note> notelist = JSON.parseArray(arr, Note.class);
+			System.out.println("**********************************************第"+splitobj.getCp()+"页，共计"+splitobj.getAllpage()+"页************************************************************");
 			System.out.println("编号\t用户\t   笔记名字\t\t\t     创建时间\t\t是否共享\t\t\t简介");
 			if(notelist==null||notelist.size()<=0){
 				System.out.println("还没有添加过笔记");
@@ -80,7 +81,7 @@ public class NoteClientManager {
 					Note note = notelist.get(i);
 					System.out.print(note.getNid());
 					System.out.print("\t");
-					System.out.print(user.getRealname());
+					System.out.print(note.getUser().getRealname());
 					System.out.print("\t");
 					if(note.getNotename().length()<=10){
 						System.out.print(note.getNotename());
@@ -108,7 +109,7 @@ public class NoteClientManager {
 					}
 					System.out.println();
 				}
-				System.out.println("********************************************************************************************");
+				System.out.println("**********************************************************************************************************************");
 			}
 		} catch (JSONException e) {
 			e.printStackTrace();
@@ -119,9 +120,10 @@ public class NoteClientManager {
 	/**
 	 * 分页参数接收
 	 * @param splitobj
+	 * @param key : 0表示我的笔记分页，1表示共享笔记分页
 	 * @return
 	 */
-	public PageSplit scanfNextPage(PageSplit splitobj,Socket socket){
+	public PageSplit scanfNextPage(PageSplit splitobj,Socket socket,int key){
 		System.out.println("请选择页码(1.首页                         2.上一页                        3.下一页                          4.尾页                         5.查看笔记内容                      0.回主菜单)：");
 		Scanner input = new Scanner(System.in);
 		boolean flag = true;
@@ -164,12 +166,16 @@ public class NoteClientManager {
 				//查看笔记
 				String result = this.readNoteContent(socket);
 				//执行笔记的操作
-				int mydo = this.scanfNoteLoad();
+				int mydo = this.scanfNoteLoad(key);
 				if(mydo==4){
 					splitobj.setIshaveData(false);
 				}else if(mydo==2){
 					//完成共享笔记
-					
+					if(key==1){
+						System.out.println("这不是您的笔记，您不能修改它的共享设置");
+					}else{
+						this.shareNote(socket,result);
+					}
 				}else if(mydo==1){
 					//完成下载
 					boolean issuc = this.downloadNote(result);
@@ -185,6 +191,8 @@ public class NoteClientManager {
 		}
 		return splitobj;
 	}
+	
+	
 	
 	/**
 	 * 根据笔记编号到服务器读取笔记内容，并打印
@@ -217,8 +225,8 @@ public class NoteClientManager {
 	 * 读取笔记内容后,需要的操作
 	 * @return
 	 */
-	public int scanfNoteLoad(){
-		System.out.println("请选择您要的操作( 1.下载                      2.共享本笔记                        3.返回我的笔记列表                       4.返回主菜单)：");
+	public int scanfNoteLoad(int key){
+		System.out.println("请选择您要的操作( 1.下载                     "+(key==0?" 2.(共享/取消共享)本笔记":"")+"         3.返回笔记列表                       4.返回主菜单)：");
 		Scanner input = new Scanner(System.in);
 		return input.nextInt();
 	}
@@ -298,7 +306,12 @@ public class NoteClientManager {
 		return null;
 	}
 	
-	
+	/**
+	 * 执行上传
+	 * @param socket
+	 * @param list
+	 * @param user
+	 */
 	public void uploadMyNote(Socket socket,List<String> list,Users user){
 		//上传文件的内容,变为一个json数组字符串
 		String content = JSON.toJSONString(list);
@@ -346,7 +359,72 @@ public class NoteClientManager {
 		}  catch (JSONException e) {
 			e.printStackTrace();
 		}
-		
 	}
 	
+	/**
+	 * 共享我的笔记
+	 * @param result
+	 */
+	public void shareNote(Socket socket,String result){
+		/**
+		 * //result的内容：
+		 * [{"summary":"sasdfds身份三分","createTime":"2015-10-20","nid":3,"notename":"jdk环境变量配置",
+		 * "path":"D:\\qianfeng\\work\\yearEndCheck\\project\\mynotefile\\zhangsan\\jdk环境变量配置.txt","userid":7,"likeTimes":0,"isShare":"0","readTimes":0},
+		 * ["JAVA_HOME=D:\\Program-Files\\Java\\jdk1.6.0_10","CLASSPATH=.;D:\\Program-Files\\Java\\jdk1.6.0_10\\lib;","PATH=D:\\Program-Files\\Java\\jdk1.6.0_10\\bin"]]
+		 */
+		try {
+			JSONArray arr = new JSONArray(result);
+			JSONObject jsonobj = arr.getJSONObject(0);
+			Note note = JSON.parseObject(jsonobj.toString(), Note.class);
+			if(note.getIsShare().equals("0")){
+				//已经是共享了
+				note.setIsShare("1");
+			}else{
+				note.setIsShare("0");
+			}
+			// 发送请求给服务器
+			String res = new ClientSendTool<Note>(socket).sendRequest(note, 7);// 向服务器请求共享笔记为7
+			if (res.equals("true")) {
+				System.out.println("完成了笔记的分享设置，谢谢您的操作，该笔记现在处于【"+(note.getIsShare().equals("0")?"分享":"不分享")+"】状态");
+			} else {
+				System.out.println("分享操作失败，请重新操作");
+			}
+			
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void findShareNote(Socket socket,Users user){
+		System.out.println("您选择的是【搜索共享笔记】");
+		System.out.println("请选择根据哪一列来开展搜索(1.笔记名字                  2.笔记时间                     3.笔记简介):");
+		Scanner input = new Scanner(System.in);
+		int check = input.nextInt();
+		System.out.println("您选择了根据【"+(check==1?"笔记名字":(check==2?"笔记时间":"笔记简介"))+"】");
+		System.out.println("请输入搜索关键字：");
+		String kw = input.next();
+		if(check==2){
+			while(!new DateTool().checkDate(kw)){
+				System.out.println("您的输入不正确，请重新输入,输入'exit'回主菜单:");
+				System.out.println("请输入搜索关键字：");
+				kw = input.next();
+				if(kw.equals("exit")){
+					return;
+				}
+			}
+		}
+		PageSplit splitobj = this.getSplitObj(user);
+		splitobj.setColumn(check==1?"notename":(check==2?"createtime":"summary"));
+		splitobj.setKw(kw);
+		while(splitobj.getIshaveData()){
+			String res = new ClientSendTool<PageSplit>(socket).sendRequest(splitobj, 3);// 分页查询笔记为3
+			splitobj = this.printNoteInfo(res, splitobj);
+			int allpage = (splitobj.getCount()-1)/splitobj.getPs()+1;//总页数
+			splitobj.setAllpage(allpage);
+			if(splitobj.getCp()<=allpage&&splitobj.getCp()>=1){
+				splitobj = this.scanfNextPage(splitobj,socket,1);
+			}
+		}
+		
+	}
 }

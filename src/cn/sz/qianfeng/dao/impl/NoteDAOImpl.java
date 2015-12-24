@@ -160,9 +160,26 @@ public class NoteDAOImpl implements INoteDAO {
 		List<Note> all = new ArrayList<Note>();
 		Note vo = null;
 		String sql = "select nid,userid,notename,createtime,path,isShare,summary,readTimes," +
-				"likeTimes from note where "+column+" =? limit ?,?";
+				"likeTimes from note where "+column;
+		if(!column.equals("userid")){
+			if(column.equals("notename")||column.equals("summary")){
+				sql += " like ? and isShare=0";
+			}else{
+				sql += " > ? and isShare=0";
+			}
+		}else{
+			sql += "=?";
+		}
+		sql += " limit ?,?";
 		try {
 			pstmt = conn.prepareStatement(sql);
+			if (column.equals("createtime")) {
+				if (kw.indexOf(" ") == -1) {
+					kw += " 00:00:00";
+				}
+			} else if(column.equals("notename")||column.equals("summary")) {
+				kw = "%"+kw+"%";
+			}
 			pstmt.setString(1, kw);
 			pstmt.setInt(2, (cp-1)*ps);
 			pstmt.setInt(3, ps);
@@ -179,6 +196,9 @@ public class NoteDAOImpl implements INoteDAO {
 				vo.setSummary(URLDecoder.decode(rs.getString(7), "utf-8"));
 				vo.setReadTimes(rs.getInt(8));
 				vo.setLikeTimes(rs.getInt(9));
+				
+				vo.setUser(new UsersDAOImpl().findById(vo.getUserid()));
+				
 				all.add(vo);
 			}
 			

@@ -5,10 +5,15 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.concurrent.Future;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import com.alibaba.fastjson.JSON;
 
 import cn.sz.qianfeng.util.ClientSendTool;
 import cn.sz.qianfeng.vo.Directory;
+import cn.sz.qianfeng.vo.Note;
 import cn.sz.qianfeng.vo.PageSplit;
 import cn.sz.qianfeng.vo.Users;
 
@@ -34,6 +39,7 @@ public class ClientManager {
 			System.out.println("           2：显示个人信息");
 			System.out.println("           3：显示我的笔记");
 			System.out.println("           4：上传我的笔记");
+			System.out.println("           5：搜索共享笔记");
 			System.out.println("           0：退出");
 			System.out.println("---------- 请根据需要执行的操作，选择序号输入----");
 			int check = input.nextInt();
@@ -65,6 +71,10 @@ public class ClientManager {
 				//完成笔记上传
 				noteclient.uploadMyNote(socket, content, user);
 				break;
+			case 5:
+				//搜索共享笔记
+				noteclient.findShareNote(socket, user);
+				break;
 			default:
 				System.out.println("选择错误，请重新选择");
 				break;
@@ -93,12 +103,11 @@ public class ClientManager {
 		PageSplit splitobj = noteclient.getSplitObj(users);
 		while(splitobj.getIshaveData()){
 			String result = new ClientSendTool<PageSplit>(socket).sendRequest(splitobj, 3);//我的笔记分页显示为3
-			splitobj = noteclient.printNoteInfo(result, splitobj,users);
-			int rows = splitobj.getCount();//总行数
-			int allpage = (rows-1)/splitobj.getPs()+1;//总页数
+			splitobj = noteclient.printNoteInfo(result, splitobj);
+			int allpage = (splitobj.getCount()-1)/splitobj.getPs()+1;//总页数
 			splitobj.setAllpage(allpage);
 			if(splitobj.getCp()<=allpage&&splitobj.getCp()>=1){
-				splitobj = noteclient.scanfNextPage(splitobj,socket);
+				splitobj = noteclient.scanfNextPage(splitobj,socket,0);
 				
 			}
 		}
@@ -116,4 +125,6 @@ public class ClientManager {
 		String result = new ClientSendTool<Directory>(socket).sendRequest(direct, 6);//查询字典表为3
 		return JSON.parseArray(result, Directory.class);
 	}
+	
+	
 }

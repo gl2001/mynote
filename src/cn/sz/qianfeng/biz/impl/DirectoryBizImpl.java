@@ -10,9 +10,11 @@ import cn.sz.qianfeng.vo.Directory;
 
 public class DirectoryBizImpl implements IDirectoryBiz {
 
+	private IDirectoryDAO directdao = DAOFactory.getInstance().getDirectoryDAOInstance();
+	
 	@Override
 	public List<Directory> findall(String sub) {
-		return DAOFactory.getDirectoryDAOInstance().findall(sub);
+		return directdao.findall(sub);
 	}
 
 }
