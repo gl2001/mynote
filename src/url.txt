@@ -1,0 +1,2 @@
+github上源码的路径：
+https://github.com/gl2001/mynote.git
