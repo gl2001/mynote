@@ -1,0 +1,98 @@
+--用户表
+--userid:用户编号
+--loginname:登录名
+--pwd:密码
+--realname:真实姓名
+--nickname:昵称
+--mobile:手机
+--email:邮箱
+--university:毕业学校
+--subject:专业
+--graduateTime:毕业时间
+--cls:现在的班级(固定格式：如sz-android-xxxx)
+--isAdmin:是否是管理员(0为管理员，1为普通用户)
+create table users(
+userid Integer primary key autoincrement,
+loginname varchar(50) not null,
+pwd  varchar(50) not null,
+realname varchar(50),
+nickname varchar(50),
+mobile varchar(30),
+email varchar(50),
+university varchar(100),
+subject varchar(50),
+graduateTime varchar(20),
+cls   varchar(50),
+isAdmin varchar(10)
+);
+
+insert into users(loginname,pwd,realname,nickname,mobile,email,isAdmin)
+values('admin','admin','%E8%B6%85%E7%AE%A1','%E6%88%91%E6%9C%80%E5%A4%A7',13912345678,'admin@qianfeng.com',0);
+
+--笔记表
+--nid:笔记编号
+--userid:笔记所属用户的用户编号
+--notename:笔记名字
+--createtime:创建时间
+--path:笔记文件存放路径(d:\\目录\\文件名.后缀)
+--isShare:是否共享(0表示共享，1表示不共享)
+--summary:简介
+--readTimes:查阅次数
+--likeTimes:点赞次数
+create table note(
+nid Integer primary key autoincrement,
+userid Integer not null,
+notename varchar(100) not null,
+createtime varchar(50),
+path varchar(100) not null,
+isShare varchar(10) not null,
+summary varchar(255) not null,
+readTimes int,
+likeTimes int
+);
+
+
+insert into note(userid,notename,createtime,path,isShare,summary,readTimes,likeTimes) 
+values(7,'java%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E7%9F%A5%E8%AF%86%E7%82%B9%E6%80%BB%E7%BB%93','2015-12-20 10:00:00',
+'D:\qianfeng\work\yearEndCheck\project\mynotefile\zhangsan\java%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E7%9F%A5%E8%AF%86%E7%82%B9%E6%80%BB%E7%BB%93.txt',
+'0','aaaaaaaaaaa',0,0);
+
+--数据字典表
+--directid:字典编号，自增长
+--subject:字典所属项目
+--option:项目选项
+create table directory(
+directid Integer primary key autoincrement,
+subject varchar(50) not null,
+option varchar(50) not null,
+kw	varchar(50) not null
+);
+
+--关键字
+--kwid:关键字编号
+--nid:关键字所在笔记
+--word:关键字
+create table keyword(
+kwid Integer primary key autoincrement,
+nid  Integer not null,
+word varchar(50) not null
+);
+
+--笔记所对应的图片
+create table pic(
+pid Integer primary key autoincrement,
+nid Integer not null,
+picpath varchar(100) not null
+);
+
+
+
+insert into directory(subject,option,kw) values('area','%E6%B7%B1%E5%9C%B3','sz');
+insert into directory(subject,option,kw) values('area','%E4%B8%8A%E6%B5%B7','sh');
+insert into directory(subject,option,kw) values('area','%E5%8C%97%E4%BA%AC','bj');
+insert into directory(subject,option,kw) values('subject','Android','android');
+insert into directory(subject,option,kw) values('subject','IOS','ios');
+insert into directory(subject,option,kw) values('subject','HTML5','html5');
+
+
+

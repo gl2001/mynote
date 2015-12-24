@@ -7,8 +7,8 @@ public class Test {
 
 	public static void main(String[] args) {
 		try {
-			String s1 = "深圳";
-			String s2 = "上海";
+			String s1 = "超管";
+			String s2 = "我最大";
 			String s3 = "北京";
 			String s4 = "java面向对象知识点总结";
 			String msg1 = URLEncoder.encode(s1, "utf-8");
