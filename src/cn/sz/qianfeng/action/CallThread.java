@@ -17,6 +17,7 @@ import java.util.concurrent.Callable;
 public class CallThread implements Callable<String> {
 
 	private Socket socket;
+	private String str;
 	private String obj;
 	public CallThread(Socket socket,String obj){
 		this.socket = socket;
