@@ -1,16 +1,16 @@
---ÓÃ»§±í
---userid:ÓÃ»§±àºÅ
---loginname:µÇÂ¼Ãû
---pwd:ÃÜÂë
---realname:ÕæÊµĞÕÃû
---nickname:êÇ³Æ
---mobile:ÊÖ»ú
---email:ÓÊÏä
---university:±ÏÒµÑ§Ğ£
---subject:×¨Òµ
---graduateTime:±ÏÒµÊ±¼ä
---cls:ÏÖÔÚµÄ°à¼¶(¹Ì¶¨¸ñÊ½£ºÈçsz-android-xxxx)
---isAdmin:ÊÇ·ñÊÇ¹ÜÀíÔ±(0Îª¹ÜÀíÔ±£¬1ÎªÆÕÍ¨ÓÃ»§)
+--ç”¨æˆ·è¡¨aa
+--userid:ç”¨æˆ·ç¼–å·
+--loginname:ç™»å½•å
+--pwd:å¯†ç 
+--realname:çœŸå®å§“å
+--nickname:æ˜µç§°
+--mobile:æ‰‹æœº
+--email:é‚®ç®±
+--university:æ¯•ä¸šå­¦æ ¡
+--subject:ä¸“ä¸š
+--graduateTime:æ¯•ä¸šæ—¶é—´
+--cls:ç°åœ¨çš„ç­çº§(å›ºå®šæ ¼å¼ï¼šå¦‚sz-android-xxxx)
+--isAdmin:æ˜¯å¦æ˜¯ç®¡ç†å‘˜(0ä¸ºç®¡ç†å‘˜ï¼Œ1ä¸ºæ™®é€šç”¨æˆ·)
 create table users(
 userid Integer primary key autoincrement,
 loginname varchar(50) not null,
@@ -29,16 +29,16 @@ isAdmin varchar(10)
 insert into users(loginname,pwd,realname,nickname,mobile,email,isAdmin)
 values('admin','admin','%E8%B6%85%E7%AE%A1','%E6%88%91%E6%9C%80%E5%A4%A7',13912345678,'admin@qianfeng.com',0);
 
---±Ê¼Ç±í
---nid:±Ê¼Ç±àºÅ
---userid:±Ê¼ÇËùÊôÓÃ»§µÄÓÃ»§±àºÅ
---notename:±Ê¼ÇÃû×Ö
---createtime:´´½¨Ê±¼ä
---path:±Ê¼ÇÎÄ¼ş´æ·ÅÂ·¾¶(d:\\Ä¿Â¼\\ÎÄ¼şÃû.ºó×º)
---isShare:ÊÇ·ñ¹²Ïí(0±íÊ¾¹²Ïí£¬1±íÊ¾²»¹²Ïí)
---summary:¼ò½é
---readTimes:²éÔÄ´ÎÊı
---likeTimes:µãÔŞ´ÎÊı
+--ç¬”è®°è¡¨
+--nid:ç¬”è®°ç¼–å·
+--userid:ç¬”è®°æ‰€å±ç”¨æˆ·çš„ç”¨æˆ·ç¼–å·
+--notename:ç¬”è®°åå­—
+--createtime:åˆ›å»ºæ—¶é—´
+--path:ç¬”è®°æ–‡ä»¶å­˜æ”¾è·¯å¾„(d:\\ç›®å½•\\æ–‡ä»¶å.åç¼€)
+--isShare:æ˜¯å¦å…±äº«(0è¡¨ç¤ºå…±äº«ï¼Œ1è¡¨ç¤ºä¸å…±äº«)
+--summary:ç®€ä»‹
+--readTimes:æŸ¥é˜…æ¬¡æ•°
+--likeTimes:ç‚¹èµæ¬¡æ•°
 create table note(
 nid Integer primary key autoincrement,
 userid Integer not null,
@@ -57,10 +57,10 @@ values(7,'java%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E7%9F%A5%E8%AF%86%E7%82%B9%E6
 'D:\qianfeng\work\yearEndCheck\project\mynotefile\zhangsan\java%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E7%9F%A5%E8%AF%86%E7%82%B9%E6%80%BB%E7%BB%93.txt',
 '0','aaaaaaaaaaa',0,0);
 
---Êı¾İ×Öµä±í
---directid:×Öµä±àºÅ£¬×ÔÔö³¤
---subject:×ÖµäËùÊôÏîÄ¿
---option:ÏîÄ¿Ñ¡Ïî
+--æ•°æ®å­—å…¸è¡¨
+--directid:å­—å…¸ç¼–å·ï¼Œè‡ªå¢é•¿
+--subject:å­—å…¸æ‰€å±é¡¹ç›®
+--option:é¡¹ç›®é€‰é¡¹
 create table directory(
 directid Integer primary key autoincrement,
 subject varchar(50) not null,
@@ -68,17 +68,17 @@ option varchar(50) not null,
 kw	varchar(50) not null
 );
 
---¹Ø¼ü×Ö
---kwid:¹Ø¼ü×Ö±àºÅ
---nid:¹Ø¼ü×ÖËùÔÚ±Ê¼Ç
---word:¹Ø¼ü×Ö
+--å…³é”®å­—
+--kwid:å…³é”®å­—ç¼–å·
+--nid:å…³é”®å­—æ‰€åœ¨ç¬”è®°
+--word:å…³é”®å­—
 create table keyword(
 kwid Integer primary key autoincrement,
 nid  Integer not null,
 word varchar(50) not null
 );
 
---±Ê¼ÇËù¶ÔÓ¦µÄÍ¼Æ¬
+--ç¬”è®°æ‰€å¯¹åº”çš„å›¾ç‰‡
 create table pic(
 pid Integer primary key autoincrement,
 nid Integer not null,
